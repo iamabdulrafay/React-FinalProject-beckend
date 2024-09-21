@@ -1,0 +1,43 @@
+.ProjectShow {
+  /* display: flex; */
+  /* align-items: center; */
+  /* justify-content: center; */
+  /* flex-direction: column; */
+  padding: 3vw 4vw;
+  width: 100%;
+  min-height: 70vh;
+}
+
+.project-num h1 {
+  font-size: 2em;
+  font-weight: 300;
+  letter-spacing: -0.04em;
+  text-transform: capitalize;
+  background-color: #000000;
+  border-radius: 0.8rem;
+  padding: 0.25em 1em;
+  text-transform: uppercase;
+  color: white;
+}
+
+.project-num {
+  display: flex;
+  margin-bottom: 2vw;
+}
+
+.line {
+  height: 3em;
+  width: 0.7em;
+  background-color: #fbd11a;
+  border-radius: 0.3em;
+}
+
+.project-image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+.project-image img {
+  width: 70%;
+}

@@ -1,0 +1,38 @@
+.intro-div {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  background-color: #428e7c;
+  width: 100vw;
+  position: absolute;
+  z-index: 566;
+  position: fixed;
+  flex-direction: column;
+}
+.white-box {
+  width: 30vw;
+  height: 10vh;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.large-white {
+  width: 30vw;
+  height: 30vh;
+  opacity: 0;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+}
+.char {
+  color: white;
+  font-size: 7vw;
+}
+.course-line {
+  font-size: 3vw;
+  color: rgb(0, 0, 0);
+}
