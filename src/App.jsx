@@ -4,7 +4,7 @@ import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 import { Outlet } from "react-router-dom";
 import "./index.css";
-import "../../courses/src/components/locomotivescroll/LocomotiveScrollTrigger.css";
+// import "../../courses/src/components/locomotivescroll/LocomotiveScrollTrigger.css";
 // import "locomotive-scroll/dist/locomotive-scroll.css";
 import Intro from "./screens/Intro";
 import { ThemeProvider } from "./Teheme";
