@@ -17,7 +17,7 @@ import App from "./App.jsx";
 import Courses from "./screens/Courses.jsx";
 import About from "./screens/About.jsx";
 import ProtectedRoute from "./screens/ProtectedRoute.jsx";
-import "../../courses/src/components/locomotivescroll/LocomotiveScrollTrigger.css";
+// import "../../courses/src/components/locomotivescroll/LocomotiveScrollTrigger.css";
 import "locomotive-scroll/dist/locomotive-scroll.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 
