@@ -1,70 +1,75 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, memo } from "react";
+import axios from "axios"; // Don't forget to import axios
+import { Link } from "react-router-dom"; // Ensure Link is imported
 import "./Card.css";
-import logo from "../../assets/bg.jpg";
-// import Button from '../button/Button'
-import axios from "axios";
-import { Link } from "react-router-dom";
 import ButtonCustom from "../button/ButtonCustom";
 import { useTheme } from "../../Teheme";
 
-const Card = () => {
-  const [data, setData] = useState([]);
+const Card = memo(() => {
   const { theme } = useTheme();
+  const [data, setData] = useState([]); // Initialize data state
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await axios.get(
-          "https://web-production-ddef.up.railway.app/api/courses/"
-        );
-        console.log(response.data);
-        setData(response.data);
-      } catch (error) {
-        console.log(error.message);
-      }
-    };
-
-    fetchData();
+  const fetchData = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        "https://web-production-ddef.up.railway.app/api/courses/"
+      );
+      console.log("Fetched data:", response.data); // Log the data
+      setData(response.data);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
   }, []);
 
-  return (
-    <div className="card-container">
-      {data.map((e) => (
-        <div className="card-main">
-          <div className={`card ${theme}`}>
-            <div className="top">
-              <img src={e.course_thumbnail} alt={e.title} />
-            </div>
-            <div className="bottom">
-              <h1>{e.course_heading}</h1>
-              <p className="desc">{e.course_description}</p>
+  useEffect(() => {
+    fetchData();
+  }, [fetchData]);
 
-              {e.course_tags.split(",").map((tag, index) => (
-                <button key={index} className={`btn  ${theme}`}>
-                  {tag.trim()} {/* Trim to remove extra spaces */}
-                </button>
-              ))}
-              {/* <button className='btn'>Logic Building</button>
-<button className='btn'>Designing </button> */}
-              <div className={`instructor  ${theme}`}>
-                <div className="left">
-                  <p>
-                    by <span>{e.course_instructor}</span>{" "}
-                  </p>
-                </div>
-                <div className="right">
-                  <p>${e.course_price}</p>
+  const renderCards = () => {
+    if (!data || data.length === 0) {
+      return <p>No data available</p>;
+    }
+
+    return data.map((e) => {
+      if (e.course_tags) {
+        return (
+          <div key={e.id} className="card-main">
+            <div className={`card ${theme}`}>
+              <div className="top">
+                <img src={e.course_thumbnail} alt={e.title} />
+              </div>
+              <div className="bottom">
+                <h1>{e.course_heading}</h1>
+                <p className="desc">{e.course_description}</p>
+                {e.course_tags.split(",").map((tag, index) => (
+                  <button key={index} className={`btn ${theme}`}>
+                    {tag.trim()}
+                  </button>
+                ))}
+                <div className={`instructor ${theme}`}>
+                  <div className="left">
+                    <p>
+                      by <span>{e.course_instructor}</span>
+                    </p>
+                  </div>
+                  <div className="right">
+                    <p>${e.course_price}</p>
+                  </div>
                 </div>
               </div>
             </div>
+            <Link to={`/courses/${e.id}`}>
+              <ButtonCustom width="100%" text={"Buy Now"} />
+            </Link>
           </div>
-          <Link to={`/courses/${e.id}`}>
-            <ButtonCustom width="100%" text={"Buy Now"} />
-          </Link>
-        </div>
-      ))}
-    </div>
-  );
-};
+        );
+      } else {
+        return null;
+      }
+    });
+  };
+
+  return <div className="card-container">{renderCards()}</div>;
+});
 
 export default Card;

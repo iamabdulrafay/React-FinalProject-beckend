@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios"; // Import Axios for making HTTP requests
 import { Link, useNavigate } from "react-router-dom"; // For navigation after login
-import { Alert } from "react-bootstrap"; // Import Alert from React Bootstrap
-// Adjust the path as needed
+import { Alert, Spinner } from "react-bootstrap"; // Import Alert from React Bootstrap
 import "./LoginForm.css";
 import ButtonCustom from "../button/ButtonCustom";
 import { useTheme } from "../../Teheme";
@@ -16,6 +15,7 @@ const LoginForm = () => {
 
   const [error, setError] = useState(null); // To store error messages
   const [alert, setAlert] = useState(false); // For showing alert
+  const [loading, setLoading] = useState(false); // Loading state for button
   const navigate = useNavigate(); // Hook for navigation
 
   const handleChange = (e) => {
@@ -26,6 +26,13 @@ const LoginForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!formData.username || !formData.password) {
+      setError("Please fill in all fields");
+      setAlert(true);
+      return;
+    }
+
+    setLoading(true);
     try {
       const response = await axios.post(
         "https://web-production-ddef.up.railway.app/api/login/",
@@ -37,17 +44,21 @@ const LoginForm = () => {
         }
       );
 
-      const { CSRFToken } = response.data;
+      const { token, CSRFToken } = response.data;
 
-      // Store CSRFToken in localStorage
+      // Store tokens in localStorage
+      localStorage.setItem("authToken", token);
       localStorage.setItem("access_CSRFToken", CSRFToken);
 
       console.log("Login successful:", response.data);
-      navigate("/"); // Redirect to another page after login
+      setLoading(false);
+      setFormData({ username: "", password: "" }); // Clear form fields
+      navigate("/"); // Redirect after login
     } catch (error) {
       console.error("Login error:", error.response?.data || error.message);
       setError(error.response?.data?.detail || "An error occurred");
-      setAlert(true); // Show alert on error
+      setAlert(true);
+      setLoading(false);
     }
   };
 
@@ -60,7 +71,7 @@ const LoginForm = () => {
             <div className="form-input">
               <label htmlFor="username">Username</label>
               <input
-                type="username"
+                type="text"
                 id="username"
                 name="username"
                 value={formData.username}
@@ -89,7 +100,7 @@ const LoginForm = () => {
                 <p>{error}</p>
               </Alert>
             )}
-            <span className="asking">Donot have an account?</span>
+            <span className="asking">Don't have an account?</span>
             <Link className="asking" to="/register">
               Signup
             </Link>
@@ -97,10 +108,11 @@ const LoginForm = () => {
             <ButtonCustom
               width="100%"
               height="6vh"
-              text="Confirm"
+              text={loading ? "Logging in..." : "Confirm"}
               type="submit"
-              // color="blue"
+              disabled={loading} // Disable button during loading
             />
+            {loading && <Spinner animation="border" size="sm" />}
           </form>
         </div>
       </div>

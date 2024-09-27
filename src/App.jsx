@@ -14,7 +14,7 @@ const App = () => {
 
   return (
     <>
-      <Intro bgcolor={"#fff"}> </Intro>
+      {/* <Intro bgcolor={"#fff"}> </Intro> */}
       <LocomotiveScrollProvider
         options={{ smooth: true }}
         containerRef={containerRef}>

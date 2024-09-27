@@ -8,6 +8,7 @@ const VideosContainer = () => {
   const [videos, setVideos] = useState([]);
   const [selectedVideo, setSelectedVideo] = useState(null);
   const [showFullContent, setShowFullContent] = useState(false);
+  const [loading, setLoading] = useState(true); // Loading state
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -19,8 +20,6 @@ const VideosContainer = () => {
           (outline_video) => outline_video.course_outline === Number(outlineId)
         );
 
-        console.log(outlineWithVideos);
-
         if (outlineWithVideos.length > 0) {
           setVideos(outlineWithVideos);
           setSelectedVideo(outlineWithVideos[0]);
@@ -29,6 +28,8 @@ const VideosContainer = () => {
         }
       } catch (error) {
         console.error("Error fetching course videos:", error);
+      } finally {
+        setLoading(false); // Set loading to false after fetching
       }
     };
 
@@ -57,12 +58,15 @@ const VideosContainer = () => {
   return (
     <div className="videos-container">
       <div className="video-player">
-        {selectedVideo ? (
+        {loading ? (
+          <p>Loading videos...</p>
+        ) : selectedVideo ? (
           <div>
             <video key={selectedVideo.id} controls>
               <source src={selectedVideo.course_video} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
+
             <h2 className="selected-video">{selectedVideo.video_name}</h2>
             <p className="see-more">
               {formatContent(
@@ -90,7 +94,7 @@ const VideosContainer = () => {
               className="video-item"
               onClick={() => handleVideoClick(video)}>
               <div className="left">
-                <video key={video.id} controls width="200">
+                <video key={video.id} controls width="200" loading="lazy">
                   <source src={video.course_video} type="video/mp4" />
                   Your browser does not support the video tag.
                 </video>

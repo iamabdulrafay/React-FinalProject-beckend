@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./CourseOutline.css";
@@ -11,40 +11,40 @@ const CourseOutline = ({ courseId }) => {
 
   const { theme } = useTheme();
   // console.log("courseId", courseId);
-  useEffect(() => {
-    const fetchCourseOutlines = async () => {
-      try {
-        const response = await axios.get(
-          `https://web-production-ddef.up.railway.app/api/course-outlines/`
-        );
 
-        // Convert courseId to a number (assuming courseId from URL is a string)
-        const filteredOutlines = response.data.filter(
-          (outline) => outline.course === Number(courseId)
-        );
+  const fetchCourseOutlines = useCallback(async () => {
+    try {
+      const response = await axios.get(
+        `https://web-production-ddef.up.railway.app/api/course-outlines/`
+      );
 
-        setCourseOutline(filteredOutlines);
-        console.log(filteredOutlines);
-      } catch (error) {
-        console.error("Error fetching course outlines:", error);
-      }
+      // Convert courseId to a number (assuming courseId from URL is a string)
+      const filteredOutlines = response.data.filter(
+        (outline) => outline.course === Number(courseId)
+      );
+
+      setCourseOutline(filteredOutlines);
+      console.log(filteredOutlines);
+    } catch (error) {
+      console.error("Error fetching course outlines:", error);
+    }
+    const toggleContent = (id) => {
+      setIsExpanded((prev) => ({
+        ...prev,
+        [id]: !prev[id],
+      }));
     };
 
+    const navigateToVideos = (outlineId) => {
+      navigate(`/videos/${courseId}/${outlineId}`);
+    };
+  });
+
+  useEffect(() => {
     if (courseId) {
       fetchCourseOutlines();
     }
   }, [courseId]);
-
-  const toggleContent = (id) => {
-    setIsExpanded((prev) => ({
-      ...prev,
-      [id]: !prev[id],
-    }));
-  };
-
-  const navigateToVideos = (outlineId) => {
-    navigate(`/videos/${courseId}/${outlineId}`);
-  };
 
   return (
     <div className="course-outline">

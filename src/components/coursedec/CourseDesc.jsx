@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 import "./CourseDesc.css";
@@ -8,24 +8,27 @@ import ButtonCustom from "../button/ButtonCustom";
 const CourseDesc = () => {
   const { id } = useParams(); // Get id from route params
   const [course, setCourse] = useState(null);
-
-  useEffect(() => {
-    const fetchCourseDets = async () => {
-      if (id) {
-        // Ensure courseId is valid
-        try {
-          const response = await axios.get(
-            `https://web-production-ddef.up.railway.app/api/courses/${id}/`
-          );
-          setCourse(response.data); // Assuming response data is an object
-        } catch (error) {
-          console.error("Error fetching course details:", error);
-        }
-      } else {
-        console.error("Course ID is not provided");
+  const fetchCourseDets = useCallback(async () => {
+    if (id) {
+      // Ensure courseId is valid
+      try {
+        const response = await axios.get(
+          `https://web-production-ddef.up.railway.app/api/courses/${id}/`
+        );
+        setCourse(response.data); // Assuming response data is an object
+      } catch (error) {
+        console.error("Error fetching course details:", error);
       }
-    };
+    } else {
+      console.error("Course ID is not provided");
+    }
+  });
+  useEffect(() => {
     fetchCourseDets();
+
+    return () => {
+      fetchCourseDets();
+    };
   }, [id]);
 
   if (!course) return <p>Loading...</p>;

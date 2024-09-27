@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense, lazy } from "react";
 import ReactDOM from "react-dom/client";
 import {
   createBrowserRouter,
@@ -12,16 +12,17 @@ import Login from "./screens/Login.jsx";
 import Register from "./screens/Register.jsx";
 import VerifyOtpForm from "./screens/OtpVerficationForm.jsx";
 import CourseDets from "./screens/CourseDets.jsx";
-import CourseVideos from "./screens/CourseVideos.jsx";
 import App from "./App.jsx";
 import Courses from "./screens/Courses.jsx";
 import About from "./screens/About.jsx";
 import ProtectedRoute from "./screens/ProtectedRoute.jsx";
-// import "../../courses/src/components/locomotivescroll/LocomotiveScrollTrigger.css";
 import "locomotive-scroll/dist/locomotive-scroll.css";
 import "bootstrap/dist/css/bootstrap.min.css";
+import ChatComponent from "./components/chat/Chat.jsx";
+import FixedButton from "./components/fixedbutton/FixedButton.jsx";
 
-// Define your routes
+const CourseVideos = lazy(() => import("./screens/CourseVideos.jsx")); // Ensure this uses uppercase
+
 const router = createBrowserRouter(
   createRoutesFromElements(
     <>
@@ -32,18 +33,19 @@ const router = createBrowserRouter(
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
         <Route path="/verify-otp" element={<VerifyOtpForm />} />
-        {/* <Route path="/courses/:id" element={<CourseDets />} />
-        <Route path="/videos/:courseId/:outlineId" element={<CourseVideos />} /> */}
         <Route
           path="/courses/:id"
           element={<ProtectedRoute element={<CourseDets />} />}
         />
         <Route
           path="/videos/:courseId/:outlineId"
-          element={<ProtectedRoute element={<CourseVideos />} />}
+          element={
+            <Suspense fallback={<div>Loading...</div>}>
+              <ProtectedRoute element={<CourseVideos />} />
+            </Suspense>
+          }
         />
-        <Route path="*" element={<div>404 Not Found</div>} />{" "}
-        {/* Handle 404 errors */}
+        <Route path="*" element={<div>404 Not Found</div>} />
       </Route>
     </>
   )

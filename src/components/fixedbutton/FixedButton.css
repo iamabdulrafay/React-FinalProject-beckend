@@ -1,0 +1,29 @@
+.chat-img {
+  position: fixed;
+
+  right: 0%;
+  z-index: 1000;
+  padding: 10px 20px;
+
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+  top: 12%;
+  width: 18%;
+}
+
+@media (max-width: 600px) {
+  .chat-img {
+    position: fixed;
+    top: 20%;
+    right: 0%;
+    z-index: 1000;
+    padding: 10px 20px;
+
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+
+    width: 35%;
+  }
+}
