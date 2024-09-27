@@ -35,15 +35,15 @@ const CourseOutline = ({ courseId }) => {
       }));
     };
   });
-  const navigateToVideos = (outlineId) => {
-    navigate(`/videos/${courseId}/${outlineId}`);
-  };
+
   useEffect(() => {
     if (courseId) {
       fetchCourseOutlines();
     }
   }, [courseId]);
-
+  const navigateToVideos = (outlineId) => {
+    navigate(`/videos/${courseId}/${outlineId}`);
+  };
   return (
     <div className="course-outline">
       <h1 className="main-heading">Dominate.</h1>
