@@ -34,12 +34,10 @@ const CourseOutline = ({ courseId }) => {
         [id]: !prev[id],
       }));
     };
-
-    const navigateToVideos = (outlineId) => {
-      navigate(`/videos/${courseId}/${outlineId}`);
-    };
   });
-
+  const navigateToVideos = (outlineId) => {
+    navigate(`/videos/${courseId}/${outlineId}`);
+  };
   useEffect(() => {
     if (courseId) {
       fetchCourseOutlines();

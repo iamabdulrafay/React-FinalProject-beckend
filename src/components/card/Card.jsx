@@ -11,15 +11,8 @@ const Card = memo(() => {
 
   const fetchData = useCallback(async () => {
     try {
-      const token = localStorage.getItem("authToken"); // Retrieve the token
-
       const response = await axios.get(
-        "https://web-production-ddef.up.railway.app/api/courses/",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`, // Include the token in the Authorization header
-          },
-        }
+        "https://web-production-ddef.up.railway.app/api/courses/"
       );
       console.log("Fetched data:", response.data); // Log the data
       setData(response.data);
