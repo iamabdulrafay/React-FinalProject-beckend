@@ -20,8 +20,9 @@ import "locomotive-scroll/dist/locomotive-scroll.css";
 import "bootstrap/dist/css/bootstrap.min.css";
 import ChatComponent from "./components/chat/Chat.jsx";
 import FixedButton from "./components/fixedbutton/FixedButton.jsx";
+import CourseVideos from "./screens/CourseVideos.jsx";
 
-const CourseVideos = lazy(() => import("./screens/CourseVideos.jsx")); // Ensure this uses uppercase
+// const CourseVideos = lazy(() => import("./screens/CourseVideos.jsx")); // Ensure this uses uppercase
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -37,13 +38,17 @@ const router = createBrowserRouter(
           path="/courses/:id"
           element={<ProtectedRoute element={<CourseDets />} />}
         />
-        <Route
+        {/* <Route
           path="/videos/:courseId/:outlineId"
           element={
             <Suspense fallback={<div>Loading...</div>}>
               <ProtectedRoute element={<CourseVideos />} />
             </Suspense>
           }
+        /> */}
+        <Route
+          path="/videos/:courseId/:outlineId"
+          element={<ProtectedRoute element={<CourseVideos />} />}
         />
         <Route path="*" element={<div>404 Not Found</div>} />
       </Route>

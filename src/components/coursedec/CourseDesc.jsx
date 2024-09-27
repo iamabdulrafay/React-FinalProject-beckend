@@ -22,14 +22,14 @@ const CourseDesc = () => {
     } else {
       console.error("Course ID is not provided");
     }
-  });
+  }, [id]);
   useEffect(() => {
     fetchCourseDets();
 
     return () => {
       fetchCourseDets();
     };
-  }, [id]);
+  }, [id, course]);
 
   if (!course) return <p>Loading...</p>;
 

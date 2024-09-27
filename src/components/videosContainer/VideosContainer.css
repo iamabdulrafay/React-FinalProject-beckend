@@ -63,7 +63,7 @@
 @media (max-width: 700px) {
   .videos-container {
     display: flex;
-    height: 100vh;
+    min-height: 10vh;
     flex-direction: column;
   }
 

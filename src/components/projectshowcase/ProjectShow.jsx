@@ -20,7 +20,7 @@ const ProjectShow = ({ courseId }) => {
     } catch (error) {
       console.error("Error fetching course outlines:", error);
     }
-  });
+  }, [courseId]);
 
   useEffect(() => {
     if (courseId) {
