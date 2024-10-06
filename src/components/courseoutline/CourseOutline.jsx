@@ -8,9 +8,7 @@ const CourseOutline = ({ courseId }) => {
   const [courseOutline, setCourseOutline] = useState([]);
   const [isExpanded, setIsExpanded] = useState({});
   const navigate = useNavigate();
-
   const { theme } = useTheme();
-  // console.log("courseId", courseId);
 
   const fetchCourseOutlines = useCallback(async () => {
     try {
@@ -18,7 +16,6 @@ const CourseOutline = ({ courseId }) => {
         `https://web-production-ddef.up.railway.app/api/course-outlines/`
       );
 
-      // Convert courseId to a number (assuming courseId from URL is a string)
       const filteredOutlines = response.data.filter(
         (outline) => outline.course === Number(courseId)
       );
@@ -28,22 +25,25 @@ const CourseOutline = ({ courseId }) => {
     } catch (error) {
       console.error("Error fetching course outlines:", error);
     }
-    const toggleContent = (id) => {
-      setIsExpanded((prev) => ({
-        ...prev,
-        [id]: !prev[id],
-      }));
-    };
-  });
+  }, [courseId]);
+
+  const toggleContent = (id) => {
+    setIsExpanded((prev) => ({
+      ...prev,
+      [id]: !prev[id],
+    }));
+  };
 
   useEffect(() => {
     if (courseId) {
       fetchCourseOutlines();
     }
-  }, [courseId]);
+  }, [courseId, fetchCourseOutlines]);
+
   const navigateToVideos = (outlineId) => {
     navigate(`/videos/${courseId}/${outlineId}`);
   };
+
   return (
     <div className="course-outline">
       <h1 className="main-heading">Dominate.</h1>
@@ -54,7 +54,7 @@ const CourseOutline = ({ courseId }) => {
           <div key={outline.id} className={`dropdown-container ${theme}`}>
             <h2
               className={`dropdown-heading ${theme}`}
-              onClick={() => navigateToVideos(outline.id)} // Use outline_id for navigation
+              onClick={() => navigateToVideos(outline.id)}
               style={{ cursor: "pointer" }}>
               {outline.outline_heading}
             </h2>
@@ -66,7 +66,7 @@ const CourseOutline = ({ courseId }) => {
             <div
               className={`dropdown-content ${theme} ${
                 isExpanded[outline.id] ? "expanded" : ""
-              } `}>
+              }`}>
               <p className={`dropdown-title ${theme}`}>
                 {outline.outline_desc}
               </p>
